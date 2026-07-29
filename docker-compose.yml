@@ -16,8 +16,8 @@ services:
       
       # App Secrets
       - JWT_SECRET=${JWT_SECRET:-rahasia_tudeys_outfit}
-      - XENDIT_SECRET_KEY=${XENDIT_SECRET_KEY}
-      - FRONTEND_URL=${FRONTEND_URL}
+      - XENDIT_SECRET_KEY=xnd_development_bfDQ7UgHEayDjUNMImaTCABjEgGgVN50nc4SSxRVHzro3A0uv2YUr0Y3hg8kJt
+      - FRONTEND_URL=https://tudeys-outfit-frontend.vercel.app
       - PORT=3001
     depends_on:
       db:

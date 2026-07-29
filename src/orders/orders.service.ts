@@ -17,7 +17,7 @@ export class OrdersService {
     @InjectRepository(ProductVariant) private productVariantRepo: Repository<ProductVariant>,
     private dataSource: DataSource
   ) {
-    this.xendit = new Xendit({ secretKey: process.env.XENDIT_SECRET_KEY || '' });
+    this.xendit = new Xendit({ secretKey: (process.env.XENDIT_SECRET_KEY || '').trim() });
   }
 
   async getUserOrders(userId: number) {

@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      # Database Connection (Connected to the 'db' service below)
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USERNAME=${DB_USERNAME:-Admin}
+      - DB_PASSWORD=${DB_PASSWORD:-#Admin1234}
+      - DB_DATABASE=${DB_DATABASE:-tudeys_outfit}
+      
+      # App Secrets
+      - JWT_SECRET=${JWT_SECRET:-rahasia_tudeys_outfit}
+      - XENDIT_SECRET_KEY=${XENDIT_SECRET_KEY}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - PORT=3001
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tudeys_network
+
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-#RootPassword123}
+      - MYSQL_DATABASE=${DB_DATABASE:-tudeys_outfit}
+      - MYSQL_USER=${DB_USERNAME:-Admin}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-#Admin1234}
+    ports:
+      # Optional: Map to host for direct DB access from DBeaver/DataGrip
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tudeys_network
+
+volumes:
+  mariadb_data:
+
+networks:
+  tudeys_network:

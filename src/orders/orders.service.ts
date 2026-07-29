@@ -83,7 +83,7 @@ export class OrdersService {
             amount: total_harga,
             payerEmail: user.email,
             description: `Tudeys Outfit - Order #${savedOrder.id}`,
-            successRedirectUrl: 'http://localhost:3000/shop'
+            successRedirectUrl: `${process.env.FRONTEND_URL || 'https://tudeys-outfit-frontend.vercel.app'}/shop`
           }
         });
         

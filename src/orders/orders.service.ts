@@ -90,9 +90,9 @@ export class OrdersService {
         savedOrder.invoice_id = invoice.id || '';
         savedOrder.payment_url = invoice.invoiceUrl || '';
         await queryRunner.manager.save(savedOrder);
-      } catch (xenditErr) {
+      } catch (xenditErr: any) {
         console.error("Xendit Error:", xenditErr);
-        throw new BadRequestException("Gagal menggenerate payment link dari Xendit");
+        throw new BadRequestException(`Xendit Error: ${xenditErr.message || JSON.stringify(xenditErr.response?.data || xenditErr)}`);
       }
 
       await queryRunner.commitTransaction();

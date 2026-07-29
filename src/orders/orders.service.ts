@@ -92,7 +92,9 @@ export class OrdersService {
         await queryRunner.manager.save(savedOrder);
       } catch (xenditErr: any) {
         console.error("Xendit Error:", xenditErr);
-        throw new BadRequestException(`Xendit Error: ${xenditErr.message || JSON.stringify(xenditErr.response?.data || xenditErr)}`);
+        const keyUsed = (process.env.XENDIT_SECRET_KEY || '').trim();
+        const maskedKey = keyUsed.length > 10 ? `${keyUsed.substring(0, 5)}...${keyUsed.substring(keyUsed.length - 5)}` : 'KOSONG/PENDEK';
+        throw new BadRequestException(`Xendit Error: ${xenditErr.message || JSON.stringify(xenditErr.response?.data || xenditErr)}. Key: ${maskedKey}`);
       }
 
       await queryRunner.commitTransaction();
